@@ -17,6 +17,7 @@ public class Main extends PApplet{
     public static boolean bossFight = false;
     private static Boss fboss;
     public static boolean gameWon = false;
+    private int livePercentage = 100;
 
     Minim minim;
     AudioPlayer music;
@@ -73,16 +74,22 @@ public class Main extends PApplet{
 
 
         if (isShipCollided()){
-            delay(1000);
-            gameLost();
-            if (score > bestScore){
-                setBestScore(score);
+            if (livePercentage > 0){
+                background(232, 9, 9);
+                livePercentage-=1;
             }
+            else{
+                delay(1000);
+                gameLost();
+                if (score > bestScore){
+                    setBestScore(score);
+                }
 
-            // Stop the music when the game is lost
-            music.pause();
+                // Stop the music when the game is lost
+                music.pause();
 
-            return ;
+                return ;
+            }
         }
 
         moveBlocks();
@@ -113,6 +120,7 @@ public class Main extends PApplet{
             fill(255);
             textSize(20);
             text("Score : "+score,100,100);
+            text("Lives : "+livePercentage+"%" ,100, 70 );
         }
 
         if (blocks.size() == 0 && !bossFight) {
