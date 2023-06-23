@@ -3,7 +3,7 @@ import processing.core.PApplet;
 public class Block {
     protected int blockX;
     protected int blockY;
-    private int blockResistance;
+    protected int blockResistance;
     public static int speedY = -70;
     protected int blockHeight = 60;
     protected int blockWidth = 30;

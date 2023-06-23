@@ -7,6 +7,7 @@ import ddf.minim.*;
 
 public class Main extends PApplet{
     PImage backgroundImage;
+    private boolean gameEnded = false;
     public static int bestScore;
     public static PApplet processing;
     public static ArrayList<Block> blocks = new ArrayList<>();
@@ -44,12 +45,18 @@ public class Main extends PApplet{
         size(400, 700);
     }
 
-    private boolean gameEnded = false;
-
     @Override
     public void draw() {
+
         background(0);
         keyPressed();
+        moveBlocks();
+        moveBullets();
+        stroke(225);
+        strokeWeight(1);
+        line(0,600,440,600);       //game line
+        noStroke();
+
         for (Block b : blocks){
             showBlock(b.getBlockX(), b.getBlockY(), b);
         }
@@ -62,7 +69,6 @@ public class Main extends PApplet{
             showBullet(bullet.bulletX, bullet.bulletY, bullet);
         }
 
-
         if (isBulletCollided()) {
             bullets.remove(collidedBullet);
             collidedBlock.setBlockResistance(collidedBlock.getBlockResistance() - 1);
@@ -71,7 +77,6 @@ public class Main extends PApplet{
                 score++;
             }
         }
-
 
         if (isShipCollided()){
             if (livePercentage > 0){
@@ -91,13 +96,6 @@ public class Main extends PApplet{
                 return ;
             }
         }
-
-        moveBlocks();
-        moveBullets();
-        stroke(225);
-        strokeWeight(1);
-        line(0,600,440,600);       //game line
-        noStroke();
 
         Ship ship = new Ship(600,255,0,0);
         ship.makeAndShowObjects(mouseX ,600, 20, 30, 255,0,0);
@@ -119,15 +117,21 @@ public class Main extends PApplet{
             // update score display
             fill(255);
             textSize(20);
-            text("Score : "+score,100,100);
-            text("Lives : "+livePercentage+"%" ,100, 70 );
+            text("Score : " + score,100,100);
+            text("Life : " + livePercentage + "%" ,100, 70 );
         }
 
         if (blocks.size() == 0 && !bossFight) {
-            Boss boss = new Boss(20, 0, 255, 0, 0, 100);
+            delay(2000);
+            Boss boss = new Boss(20, -60, 255, 0, 0);
             blocks.add(boss);
             fboss=boss;
             bossFight = true;
+        }
+
+        if (bossFight && blocks.size()==0){
+            gameEnded=true;
+            gameWon=true;
         }
 
         if (gameWon){
@@ -139,22 +143,33 @@ public class Main extends PApplet{
             music.pause();
 
             gameEnded = true;
+
             return ;
         }
+
     }
 
     public void moveBlocks(){
-        for (int i = blocks.size() - 1; i >= 0; i--) {
-            Block b = blocks.get(i);
+        if (!bossFight){
+            for (int i = blocks.size() - 1; i >= 0; i--) {
+                Block b = blocks.get(i);
 
-            // Move the block downwards
-            b.setBlockY(b.getBlockY() + 2);
+                // Move the block downwards
+                b.setBlockY(b.getBlockY() + 2);
 
-            // Check if the block has gone off the bottom of the screen
-            if (b.getBlockY() > 600) {
-                // Remove the block from the ArrayList
-                blocks.remove(i);
-                score ++;
+                // Check if the block has gone off the bottom of the screen
+                if (b.getBlockY() > 600) {
+                    // Remove the block from the ArrayList
+                    blocks.remove(i);
+                    score ++;
+                }
+            }
+        }
+        else{
+            fboss.blockY = fboss.blockY + 1;
+            if (fboss.blockY > 700){
+                score += 50;
+                gameEnded=true;
             }
         }
     }
@@ -189,40 +204,17 @@ public class Main extends PApplet{
             int blockBottom = b.getBlockY() + b.getBlockHeight();
 
             // calculate the bounding box for the human
-            int shipLeft = Ship.leftHandX1;
-            int humanRight = Ship.rightHandX2;
-            int humanTop = Ship.headY - 10; // adjust top boundary to account for head
-            int humanBottom = Ship.bodyY + Ship.bodyHeight;
+            int shipLeft = Ship.leftHandX2;
+            int shipRight = Ship.rightHandX2;
+            int shipTop = Ship.headY - 10; // adjust top boundary to account for head
+            int shipBottom = Ship.bodyY + Ship.bodyHeight;
 
             // check for intersection between the two bounding boxes
-            if (shipLeft <= blockRight && humanRight >= blockLeft && humanTop <= blockBottom-4 && humanBottom >= blockTop-4) {
+            if (shipLeft <= blockRight && shipRight >= blockLeft && shipTop <= blockBottom-4 &&  shipBottom >= blockTop-4) {
                 // collision detected - handle the collision
                 return true;
             }
 
-            // calculate the bounding box for the human left hand
-            int leftHandLeft = Ship.leftHandX1;
-            int leftHandRight = Ship.leftHandX2;
-            int leftHandTop = Ship.leftHandY1;
-            int leftHandBottom = Ship.leftHandY2;
-
-            // check for intersection between the block bounding box and the left hand bounding box
-            if (leftHandLeft <= blockRight && leftHandRight >= blockLeft && leftHandTop <= blockBottom && leftHandBottom >= blockTop) {
-                // collision detected with left hand - handle the collision
-                return true;
-            }
-
-            // calculate the bounding box for the human left hand
-            int rightHandLeft = Ship.rightHandX2;
-            int rightHandRight = Ship.rightHandX1;
-            int rightHandTop = Ship.rightHandY2;
-            int rightHandBottom = Ship.rightHandY1;
-
-            // check for intersection between the block bounding box and the left hand bounding box
-            if (rightHandLeft <= blockRight && rightHandRight >= blockLeft && rightHandTop <= blockBottom && rightHandBottom >= blockTop) {
-                // collision detected with right hand - handle the collision
-                return true;
-            }
         }
 
         return false;

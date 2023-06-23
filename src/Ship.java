@@ -68,7 +68,6 @@ public class Ship implements myInterface{
     @Override
     public void makeAndShowObjects(int x, int y, int width, int height, int R, int G, int B) {
         PApplet mp = Main.processing;
-
         mp.fill(R,G,B);
         mp.noStroke();
         bodyX1=x;
