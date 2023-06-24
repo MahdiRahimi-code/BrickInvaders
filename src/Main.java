@@ -204,7 +204,7 @@ public class Main extends PApplet{
             int blockBottom = b.getBlockY() + b.getBlockHeight();
 
             // calculate the bounding box for the human
-            int shipLeft = Ship.leftHandX2;
+            int shipLeft = mouseX - 40;
             int shipRight = Ship.rightHandX2;
             int shipTop = Ship.headY - 10; // adjust top boundary to account for head
             int shipBottom = Ship.bodyY + Ship.bodyHeight;
