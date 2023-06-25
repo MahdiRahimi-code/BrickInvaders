@@ -10,32 +10,33 @@ public class Block {
     private int blockR;
     private int blockG;
     private int blockB;
-    public Block (int blockX ,int blockY ,int blockR ,int blockG ,int blockB){
+
+    public Block(int blockX, int blockY, int blockR, int blockG, int blockB) {
         this.blockR = blockR;
         this.blockG = blockG;
         this.blockB = blockB;
         this.blockX = blockX;
         this.blockY = blockY;
-        blockResistance=20;
+        blockResistance = 20;
     }
 
     public static void makeBlocks() {
         PApplet d = Main.processing;
-        int[][] colors = { {255, 0, 195}, {0, 255, 0}, {0, 0, 255}, {255, 255, 0} };
-        for (int i=0; i<20; i++) {
+        int[][] colors = { { 255, 0, 195 }, { 0, 255, 0 }, { 0, 0, 255 }, { 255, 255, 0 } };
+        for (int i = 0; i < 20; i++) {
             int[] rowColors = new int[4];
             // select a random color for each block in a row
-            for (int j=0; j<4; j++) {
+            for (int j = 0; j < 4; j++) {
                 int randomIndex = (int) d.random(colors.length);
                 rowColors[j] = randomIndex;
             }
-            Main.blocks.add(new Block((int)d.random(70), (int)d.random(speedY-140,speedY),
+            Main.blocks.add(new Block((int) d.random(70), (int) d.random(speedY - 140, speedY),
                     colors[rowColors[0]][0], colors[rowColors[0]][1], colors[rowColors[0]][2]));
-            Main.blocks.add(new Block((int)d.random(100,170), (int)d.random(speedY-140,speedY),
+            Main.blocks.add(new Block((int) d.random(100, 170), (int) d.random(speedY - 140, speedY),
                     colors[rowColors[1]][0], colors[rowColors[1]][1], colors[rowColors[1]][2]));
-            Main.blocks.add(new Block((int)d.random(200,270), (int)d.random(speedY-140,speedY),
+            Main.blocks.add(new Block((int) d.random(200, 270), (int) d.random(speedY - 140, speedY),
                     colors[rowColors[2]][0], colors[rowColors[2]][1], colors[rowColors[2]][2]));
-            Main.blocks.add(new Block((int)d.random(300,370), (int)d.random(speedY-140,speedY),
+            Main.blocks.add(new Block((int) d.random(300, 370), (int) d.random(speedY - 140, speedY),
                     colors[rowColors[3]][0], colors[rowColors[3]][1], colors[rowColors[3]][2]));
             speedY -= 200;
         }

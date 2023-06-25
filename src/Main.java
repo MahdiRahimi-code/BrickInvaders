@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import ddf.minim.*;
 
-public class Main extends PApplet{
+public class Main extends PApplet {
     PImage backgroundImage;
     private boolean gameEnded = false;
     public static int bestScore;
@@ -24,20 +24,21 @@ public class Main extends PApplet{
     AudioPlayer music;
 
     public static void main(String[] args) {
-        PApplet.main("Main" ,args);
+        PApplet.main("Main", args);
     }
 
     @Override
     public void setup() {
-        processing=this;
+        processing = this;
         Block.makeBlocks();
 
         // Load the music file and start playing it
         minim = new Minim(this);
-        music = minim.loadFile("C:\\Users\\AceR\\Desktop\\Java\\BrickInvaders\\04 Comptine d'un autre ete, l'apres.mp3");
-        music.loop();
+        // music = minim.loadFile("C:\\Users\\AceR\\Desktop\\Java\\BrickInvaders\\04
+        // Comptine d'un autre ete, l'apres.mp3");
+        // music.loop();
 
-        bestScore=getBestScore();
+        bestScore = getBestScore();
     }
 
     @Override
@@ -54,14 +55,14 @@ public class Main extends PApplet{
         moveBullets();
         stroke(225);
         strokeWeight(1);
-        line(0,600,440,600);       //game line
+        line(0, 600, 440, 600); // game line
         noStroke();
 
-        for (Block b : blocks){
+        for (Block b : blocks) {
             showBlock(b.getBlockX(), b.getBlockY(), b);
         }
 
-        if (mousePressed){
+        if (mousePressed) {
             shoot();
         }
 
@@ -78,63 +79,62 @@ public class Main extends PApplet{
             }
         }
 
-        if (isShipCollided()){
-            if (livePercentage > 0){
+        if (isShipCollided()) {
+            if (livePercentage > 0) {
                 background(232, 9, 9);
-                livePercentage-=1;
-            }
-            else{
+                livePercentage -= 1;
+            } else {
                 delay(1000);
                 gameLost();
-                if (score > bestScore){
+                if (score > bestScore) {
                     setBestScore(score);
                 }
 
                 // Stop the music when the game is lost
                 music.pause();
 
-                return ;
+                return;
             }
         }
 
-        Ship ship = new Ship(600,255,0,0);
-        ship.makeAndShowObjects(mouseX ,600, 20, 30, 255,0,0);
+        Ship ship = new Ship(600, 255, 0, 0);
+        ship.makeAndShowObjects(mouseX, 600, 20, 30, 255, 0, 0);
 
-//        if (blocks.isEmpty()) {
-//            // All blocks have been removed - end the game
-//            GameWon();
-//
-//            setBestScore(score);
-//
-//            // Stop the music when the game is won
-//            music.pause();
-//
-//            gameEnded = true;
-//            return ;
-//        }
+        // if (blocks.isEmpty()) {
+        // // All blocks have been removed - end the game
+        // GameWon();
+        //
+        // setBestScore(score);
+        //
+        // // Stop the music when the game is won
+        // music.pause();
+        //
+        // gameEnded = true;
+        // return ;
+        // }
 
         if (!gameEnded) {
             // update score display
             fill(255);
             textSize(20);
-            text("Score : " + score,100,100);
-            text("Life : " + livePercentage + "%" ,100, 70 );
+            text("Score : " + score, 100, 100);
+            text("Life : " + livePercentage + "%", 100, 70);
         }
 
         if (blocks.size() == 0 && !bossFight) {
             delay(2000);
             Boss boss = new Boss(20, -60, 255, 0, 0);
             blocks.add(boss);
-            fboss=boss;
+            fboss = boss;
             bossFight = true;
         }
 
-        if (bossFight && blocks.size()==0){
-            gameEnded=true;
-            gameWon=true;
+        if (bossFight && blocks.size() == 0) {
+            gameEnded = true;
+            gameWon = true;
         }
 
-        if (gameWon){
+        if (gameWon) {
             GameWon();
 
             setBestScore(score);
@@ -144,13 +144,13 @@ public class Main extends PApplet{
 
             gameEnded = true;
 
-            return ;
+            return;
         }
 
     }
 
-    public void moveBlocks(){
-        if (!bossFight){
+    public void moveBlocks() {
+        if (!bossFight) {
             for (int i = blocks.size() - 1; i >= 0; i--) {
                 Block b = blocks.get(i);
 
@@ -161,33 +161,31 @@ public class Main extends PApplet{
                 if (b.getBlockY() > 600) {
                     // Remove the block from the ArrayList
                     blocks.remove(i);
-                    score ++;
+                    score++;
                 }
             }
-        }
-        else{
+        } else {
             fboss.blockY = fboss.blockY + 1;
-            if (fboss.blockY > 700){
+            if (fboss.blockY > 700) {
                 score += 50;
-                gameEnded=true;
+                gameEnded = true;
             }
         }
     }
 
-    public static void moveBullets(){
-        for (Bullet b : bullets){
-            b.bulletY=(b.bulletY-5);
+    public static void moveBullets() {
+        for (Bullet b : bullets) {
+            b.bulletY = (b.bulletY - 5);
         }
     }
 
-    public void showBullet(int x, int y, Bullet b){
+    public void showBullet(int x, int y, Bullet b) {
         fill(b.bulletR, b.bulletG, b.bulletB);
         noStroke();
-        circle(x,y,b.bulletRadius);
+        circle(x, y, b.bulletRadius);
     }
 
-
-    public void showBlock(int x, int y, Block b){
+    public void showBlock(int x, int y, Block b) {
         int blockwidth = 40 + (b.getBlockResistance()); // calculate the block size based on its resistance level
         int blockLength = 50 + (b.getBlockResistance());
         fill(b.getBlockR(), b.getBlockG(), b.getBlockB());
@@ -195,7 +193,7 @@ public class Main extends PApplet{
         rect(x, y, blockwidth, blockLength);
     }
 
-    public boolean isShipCollided(){
+    public boolean isShipCollided() {
         for (Block b : blocks) {
             // calculate the bounding box for the block
             int blockLeft = b.getBlockX();
@@ -210,7 +208,8 @@ public class Main extends PApplet{
             int shipBottom = Ship.bodyY + Ship.bodyHeight;
 
             // check for intersection between the two bounding boxes
-            if (shipLeft <= blockRight && shipRight >= blockLeft && shipTop <= blockBottom-4 &&  shipBottom >= blockTop-4) {
+            if (shipLeft <= blockRight && shipRight >= blockLeft && shipTop <= blockBottom - 4
+                    && shipBottom >= blockTop - 4) {
                 // collision detected - handle the collision
                 return true;
             }
@@ -220,60 +219,60 @@ public class Main extends PApplet{
         return false;
     }
 
-    public boolean isBulletCollided(){
+    public boolean isBulletCollided() {
         boolean collided = false;
-        for (Block b : blocks){
+        for (Block b : blocks) {
             int blockLeft = b.getBlockX();
             int blockRight = b.getBlockX() + b.getBlockWidth();
             int blockTop = b.getBlockY();
             int blockBottom = b.getBlockY() + b.getBlockHeight();
 
-            for (Bullet bullet : bullets){
+            for (Bullet bullet : bullets) {
                 int bulletLeft = bullet.bulletX - bullet.bulletRadius;
                 int bulletRight = bullet.bulletX + bullet.bulletRadius;
                 int bulletTop = bullet.bulletY - bullet.bulletRadius;
                 int bulletBottom = bullet.bulletY + bullet.bulletRadius;
 
-                if (bulletLeft <= blockRight && bulletRight >= blockLeft && bulletTop <= blockBottom-4 && bulletBottom >= blockTop-4) {
+                if (bulletLeft <= blockRight && bulletRight >= blockLeft && bulletTop <= blockBottom - 4
+                        && bulletBottom >= blockTop - 4) {
                     // collision detected - handle the collision
                     collided = true;
-                    collidedBlock=b;
-                    collidedBullet=bullet;
+                    collidedBlock = b;
+                    collidedBullet = bullet;
                 }
 
-                if (bossFight && bullet.getBulletX() >= fboss.getBlockX() && bullet.getBulletX() <= fboss.getBlockX() + fboss.getBlockWidth()
-                        && bullet.getBulletY() >= fboss.getBlockY() && bullet.getBulletY() <= fboss.getBlockY() + fboss.getBlockHeight()) {
+                if (bossFight && bullet.getBulletX() >= fboss.getBlockX()
+                        && bullet.getBulletX() <= fboss.getBlockX() + fboss.getBlockWidth()
+                        && bullet.getBulletY() >= fboss.getBlockY()
+                        && bullet.getBulletY() <= fboss.getBlockY() + fboss.getBlockHeight()) {
                     fboss.takeDamage(10);
                     return true;
                 }
             }
 
-            if (collided==true){
+            if (collided == true) {
                 break;
             }
 
         }
 
-
-
         return collided;
     }
 
-    public void gameLost(){
+    public void gameLost() {
         background(225);
-        fill(255,0,0);
+        fill(255, 0, 0);
         textSize(50);
         textAlign(CENTER);
-        text("Game Over",200,350);
-
+        text("Game Over", 200, 350);
 
         fill(0);
         textSize(30);
-        text("Your score : "+score,200,400);
+        text("Your score : " + score, 200, 400);
 
-        fill(255,0,0);
+        fill(255, 0, 0);
         textSize(30);
-        text("Best Score : "+bestScore, 200, 440);
+        text("Best Score : " + bestScore, 200, 440);
     }
 
     public void keyPressed() {
@@ -286,8 +285,7 @@ public class Main extends PApplet{
         } else if (key == '3') {
             backgroundImage = loadImage("C:\\Users\\AceR\\Desktop\\Java\\BrickInvaders\\image3.jpg");
             background(backgroundImage);
-        }
-        else if(key == '0'){
+        } else if (key == '0') {
             background(0);
         }
     }
@@ -304,10 +302,11 @@ public class Main extends PApplet{
         text("Your score : " + score, 200, 400);
     }
 
-    public static void setBestScore(int score){
+    public static void setBestScore(int score) {
         bestScore = score;
-        try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/dogeup", "root", "M13831383mR");
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/dogeup", "root",
+                    "M13831383mR");
             Statement statement = connection.createStatement();
             statement.execute("USE dogeup");
 
@@ -319,34 +318,31 @@ public class Main extends PApplet{
 
             preparedStatement.setInt(1, bestScore);
             preparedStatement.executeUpdate();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    public static int getBestScore(){
+    public static int getBestScore() {
         int score = 0;
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/dogeup", "root", "M13831383mR");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/dogeup", "root",
+                    "M13831383mR");
             Statement statement = connection.createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM score");
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 score = resultSet.getInt("Highscore");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return score;
     }
 
-    public static void shoot(){
+    public static void shoot() {
         Bullet bullet = new Bullet(processing.mouseX + 10, 510, 10, 29, 232, 26);
         bullets.add(bullet);
     }
-
-
 
 }

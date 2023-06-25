@@ -6,13 +6,13 @@ public class Bullet {
     public int bulletG;
     public int bulletB;
 
-    public Bullet(int bulletX, int bulletY, int bulletRadius, int bulletR, int bulletG, int bulletB){
-        this.bulletB=bulletB;
-        this.bulletG=bulletG;
-        this.bulletR=bulletR;
-        this.bulletX=bulletX;
-        this.bulletY=bulletY;
-        this.bulletRadius=bulletRadius;
+    public Bullet(int bulletX, int bulletY, int bulletRadius, int bulletR, int bulletG, int bulletB) {
+        this.bulletB = bulletB;
+        this.bulletG = bulletG;
+        this.bulletR = bulletR;
+        this.bulletX = bulletX;
+        this.bulletY = bulletY;
+        this.bulletRadius = bulletRadius;
     }
 
     public int getBulletX() {
