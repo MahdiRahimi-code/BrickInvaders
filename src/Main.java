@@ -58,6 +58,9 @@ public class Main extends PApplet{
 
         for (Block b : blocks){
             showBlock(b.getBlockX(), b.getBlockY(), b);
+            fill(0);
+            textSize(15);
+            text(b.blockResistance, b.blockX+10, b.blockY+15);
         }
 
         if (mousePressed){
@@ -97,7 +100,7 @@ public class Main extends PApplet{
         }
 
         Ship ship = new Ship(600,255,0,0);
-        ship.makeAndShowObjects(mouseX ,600, 20, 30, 255,0,0);
+        ship.makeAndShowObjects(mouseX ,600, 20, 30, 255,255,255);
 
 //        if (blocks.isEmpty()) {
 //            // All blocks have been removed - end the game
@@ -154,7 +157,7 @@ public class Main extends PApplet{
                 Block b = blocks.get(i);
 
                 // Move the block downwards
-                b.setBlockY(b.getBlockY() + 2);
+                b.setBlockY(b.getBlockY() + 1);
 
                 // Check if the block has gone off the bottom of the screen
                 if (b.getBlockY() > 600) {

@@ -16,7 +16,7 @@ public class Block {
         this.blockB = blockB;
         this.blockX = blockX;
         this.blockY = blockY;
-        blockResistance=20;
+        blockResistance=30;
     }
 
     public static void makeBlocks() {
