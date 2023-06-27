@@ -6,8 +6,9 @@ public class Boss extends Block {
         blockY = y;
         blockWidth = 100;
         blockHeight = 100;
-        blockResistance = 100;
+        blockResistance=100;
     }
+
 
     public void takeDamage(int damage) {
         blockResistance -= damage;
@@ -17,5 +18,6 @@ public class Boss extends Block {
             Main.gameWon = true;
         }
     }
+
 
 }
