@@ -47,7 +47,6 @@ public class Main extends PApplet{
 
     @Override
     public void draw() {
-
         background(0);
         keyPressed();
         moveBlocks();
@@ -234,7 +233,7 @@ public class Main extends PApplet{
                 int bulletTop = bullet.bulletY - bullet.bulletRadius;
                 int bulletBottom = bullet.bulletY + bullet.bulletRadius;
 
-                if (bulletLeft <= blockRight && bulletRight >= blockLeft && bulletTop <= blockBottom-4 && bulletBottom >= blockTop-4) {
+                if (bulletLeft <= blockRight+20 && bulletRight >= blockLeft && bulletTop <= blockBottom-4 && bulletBottom >= blockTop-4) {
                     // collision detected - handle the collision
                     collided = true;
                     collidedBlock=b;
@@ -260,6 +259,7 @@ public class Main extends PApplet{
     }
 
     public void gameLost(){
+        gameEnded = true;
         background(225);
         fill(255,0,0);
         textSize(50);
@@ -343,7 +343,7 @@ public class Main extends PApplet{
     }
 
     public static void shoot(){
-        Bullet bullet = new Bullet(processing.mouseX + 10, 510, 10, 29, 232, 26);
+        Bullet bullet = new Bullet(processing.mouseX + 10, 510, 5, 29, 232, 26);
         bullets.add(bullet);
     }
 
