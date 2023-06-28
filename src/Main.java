@@ -19,7 +19,7 @@ public class Main extends PApplet{
     private static Boss fboss;
     public static boolean gameWon = false;
     private int livePercentage = 100;
-
+    
     Minim minim;
     AudioPlayer music;
 
@@ -34,7 +34,7 @@ public class Main extends PApplet{
 
         // Load the music file and start playing it
         minim = new Minim(this);
-        music = minim.loadFile("C:\\Users\\AceR\\Desktop\\Java\\BrickInvaders\\04 Comptine d'un autre ete, l'apres.mp3");
+        music = minim.loadFile("G:\\BrickInvaders-master\\BrickInvaders-master\\Cardi (Ft Kagan).mp3");
         music.loop();
 
         bestScore=getBestScore();
@@ -47,14 +47,16 @@ public class Main extends PApplet{
 
     @Override
     public void draw() {
-        background(0);
+        background(128, 16, 161);
         keyPressed();
         moveBlocks();
         moveBullets();
-        stroke(225);
-        strokeWeight(1);
+        stroke(0);
+        strokeWeight(5);
         line(0,600,440,600);       //game line
         noStroke();
+        Ship ship = new Ship(600,0,0,0);
+        ship.makeAndShowObjects(mouseX ,600, 20, 30, 0,0,0);
 
         for (Block b : blocks){
             showBlock(b.getBlockX(), b.getBlockY(), b);
@@ -82,7 +84,7 @@ public class Main extends PApplet{
 
         if (isShipCollided()){
             if (livePercentage > 0){
-                background(232, 9, 9);
+                ship.makeAndShowObjects(mouseX ,600, 20, 30, 255,0,0);
                 livePercentage-=1;
             }
             else{
@@ -92,15 +94,14 @@ public class Main extends PApplet{
                     setBestScore(score);
                 }
 
-                // Stop the music when the game is lost
+            //    Stop the music when the game is lost
                 music.pause();
 
                 return ;
             }
         }
 
-        Ship ship = new Ship(600,255,0,0);
-        ship.makeAndShowObjects(mouseX ,600, 20, 30, 255,255,255);
+        
 
 //        if (blocks.isEmpty()) {
 //            // All blocks have been removed - end the game
@@ -117,10 +118,10 @@ public class Main extends PApplet{
 
         if (!gameEnded) {
             // update score display
-            fill(255);
-            textSize(20);
-            text("Score : " + score,100,100);
-            text("Life : " + livePercentage + "%" ,100, 70 );
+            fill(0);
+            textSize(25);
+            text("Score : " + score,20,675);
+            text("Life : " + livePercentage + "%" ,20, 650 );
         }
 
         if (blocks.size() == 0 && !bossFight) {
@@ -141,7 +142,7 @@ public class Main extends PApplet{
 
             setBestScore(score);
 
-            // Stop the music when the game is won
+        //    Stop the music when the game is won
             music.pause();
 
             gameEnded = true;
@@ -184,7 +185,8 @@ public class Main extends PApplet{
 
     public void showBullet(int x, int y, Bullet b){
         fill(b.bulletR, b.bulletG, b.bulletB);
-        noStroke();
+        stroke(0);
+        strokeWeight(2);
         circle(x,y,b.bulletRadius);
     }
 
@@ -193,7 +195,8 @@ public class Main extends PApplet{
         int blockwidth = 40 + (b.getBlockResistance()); // calculate the block size based on its resistance level
         int blockLength = 50 + (b.getBlockResistance());
         fill(b.getBlockR(), b.getBlockG(), b.getBlockB());
-        noStroke();
+        stroke(0);
+        strokeWeight(3);
         rect(x, y, blockwidth, blockLength);
     }
 

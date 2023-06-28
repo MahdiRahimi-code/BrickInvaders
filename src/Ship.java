@@ -79,7 +79,7 @@ public class Ship implements myInterface{
         //body
 
 
-        mp.fill(255);
+        mp.fill(0);
         mp.triangle(bodyX1, bodyY, bodyX2, bodyY, bodyX1+(width/2), bodyY-height); //head
         mp.triangle(bodyX1, bodyY+height, bodyX1+(width/2), bodyY+height, bodyX1, bodyY+2*height);  //left leg
         mp.triangle(bodyX2, bodyY+height, bodyX2-(width/2), bodyY+height, bodyX2, bodyY+2*height); //right leg
