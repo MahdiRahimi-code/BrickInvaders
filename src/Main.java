@@ -279,19 +279,20 @@ public class Main extends PApplet {
 
     public void gameLost() {
         gameEnded = true;
-        background(225);
-        fill(255, 0, 0);
-        textSize(50);
+        backgroundImage = loadImage("G:\\BrickInvaders-master\\BrickInvaders-master\\1234.jpg");
+        background(backgroundImage);
+        fill(0);
+        textSize(80);
         textAlign(CENTER);
         text("Game Over", 200, 350);
 
         fill(0);
-        textSize(30);
-        text("Your score : " + score, 200, 400);
+        textSize(50);
+        text("Your score : " + score, 200, 450);
 
         fill(255, 0, 0);
-        textSize(30);
-        text("Best Score : " + bestScore, 200, 440);
+        textSize(50);
+        text("Best Score : " + bestScore, 200, 510);
     }
 
     public void keyPressed() {
