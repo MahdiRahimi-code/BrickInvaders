@@ -38,7 +38,7 @@ public class Main extends PApplet {
 
         // Load the music file and start playing it
         minim = new Minim(this);
-        music = minim.loadFile("G:\\BrickInvaders-master\\BrickInvaders-master\\Cardi (Ft Kagan).mp3");
+        music = minim.loadFile("C:\\Users\\AceR\\Desktop\\Java\\BrickInvaders\\Cardi (Ft Kagan).mp3");
         music.loop();
 
         bestScore = getBestScore();
@@ -54,75 +54,63 @@ public class Main extends PApplet {
         if (letMenoGo == 0) {
             meno();
         } else if (letMenoGo == 1) {
-            background(128, 16, 161);
-            keyPressed();
-            backMenoCurrentGame();
-            exitCurrentGame();
-            moveBlocks();
-            moveBullets();
-            stroke(0);
-            strokeWeight(5);
-            line(0, 600, 440, 600); // game line
-            noStroke();
-            Ship ship = new Ship(600, 0, 0, 0);
-            ship.makeAndShowObjects(mouseX, 600, 20, 30, 0, 0, 0);
-
-            for (Block b : blocks) {
-                showBlock(b.getBlockX(), b.getBlockY(), b);
-                fill(0);
-                textSize(15);
-                text(b.blockResistance, b.blockX + 10, b.blockY + 15);
-            }
-
-            if (mousePressed) {
-                shoot();
-            }
-
-            for (Bullet bullet : bullets) {
-                showBullet(bullet.bulletX, bullet.bulletY, bullet);
-            }
-
-            if (isBulletCollided()) {
-                bullets.remove(collidedBullet);
-                collidedBlock.setBlockResistance(collidedBlock.getBlockResistance() - 1);
-                if (collidedBlock.getBlockResistance() == 0) {
-                    blocks.remove(collidedBlock);
-                    score++;
-                }
-            }
-
-            if (isShipCollided()) {
-                if (livePercentage > 0) {
-                    ship.makeAndShowObjects(mouseX, 600, 20, 30, 255, 0, 0);
-                    livePercentage -= 1;
-                } else {
-                    delay(1000);
-                    gameLost();
-                    if (score > bestScore) {
-                        setBestScore(score);
-                    }
-
-                    // Stop the music when the game is lost
-                    music.pause();
-
-                    return;
-                }
-            }
-
-            // if (blocks.isEmpty()) {
-            // // All blocks have been removed - end the game
-            // GameWon();
-            //
-            // setBestScore(score);
-            //
-            // // Stop the music when the game is won
-            // music.pause();
-            //
-            // gameEnded = true;
-            // return ;
-            // }
-
             if (!gameEnded) {
+                background(128, 16, 161);
+                keyPressed();
+                backMenoCurrentGame();
+                exitCurrentGame();
+                moveBlocks();
+                moveBullets();
+                stroke(0);
+                strokeWeight(5);
+                line(0, 600, 440, 600); // game line
+                noStroke();
+                Ship ship = new Ship(600, 0, 0, 0);
+                ship.makeAndShowObjects(mouseX, 600, 20, 30, 0, 0, 0);
+
+                for (Block b : blocks) {
+                    showBlock(b.getBlockX(), b.getBlockY(), b);
+                    fill(0);
+                    textSize(15);
+                    text(b.blockResistance, b.blockX + 10, b.blockY + 15);
+                }
+
+                if (mousePressed) {
+                    shoot();
+                }
+
+                for (Bullet bullet : bullets) {
+                    showBullet(bullet.bulletX, bullet.bulletY, bullet);
+                }
+
+                if (isBulletCollided()) {
+                    bullets.remove(collidedBullet);
+                    collidedBlock.setBlockResistance(collidedBlock.getBlockResistance() - 1);
+                    if (collidedBlock.getBlockResistance() == 0) {
+                        blocks.remove(collidedBlock);
+                        score++;
+                    }
+                }
+
+                if (isShipCollided()) {
+                    if (livePercentage > 0) {
+                        ship.makeAndShowObjects(mouseX, 600, 20, 30, 255, 0, 0);
+                        livePercentage -= 1;
+                    } else {
+                        delay(1000);
+                        gameLost();
+                        if (score > bestScore) {
+                            setBestScore(score);
+                        }
+
+                        // Stop the music when the game is lost
+                        music.pause();
+
+                        return;
+                    }
+                }
+
+
                 // update score display
                 fill(0);
                 rect(288, 660, 100, 25);
@@ -133,34 +121,35 @@ public class Main extends PApplet {
                 rect(288, 630, 100, 25);
                 fill(255);
                 text("Life : " + livePercentage + "%", 300, 650);
+
+
+                if (blocks.size() == 0 && !bossFight) {
+                    delay(2000);
+                    Boss boss = new Boss(20, -60, 255, 0, 0);
+                    blocks.add(boss);
+                    fboss = boss;
+                    bossFight = true;
+                }
+
+                if (bossFight && blocks.size() == 0) {
+                    gameEnded = true;
+                    gameWon = true;
+                }
+
+                if (gameWon) {
+                    GameWon();
+
+                    setBestScore(score);
+
+                    // Stop the music when the game is won
+                    music.pause();
+
+                    gameEnded = true;
+
+                    return;
+                }
+
             }
-
-            if (blocks.size() == 0 && !bossFight) {
-                delay(2000);
-                Boss boss = new Boss(20, -60, 255, 0, 0);
-                blocks.add(boss);
-                fboss = boss;
-                bossFight = true;
-            }
-
-            if (bossFight && blocks.size() == 0) {
-                gameEnded = true;
-                gameWon = true;
-            }
-
-            if (gameWon) {
-                GameWon();
-
-                setBestScore(score);
-
-                // Stop the music when the game is won
-                music.pause();
-
-                gameEnded = true;
-
-                return;
-            }
-
         }
 
     }
@@ -305,7 +294,7 @@ public class Main extends PApplet {
             backgroundImage = loadImage("C:\\Users\\AceR\\Desktop\\Java\\BrickInvaders\\image3.jpg");
             background(backgroundImage);
         } else if (key == '0') {
-            background(0);
+            background(128, 16, 161);
         }
     }
 
